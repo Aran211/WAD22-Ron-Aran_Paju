@@ -30,6 +30,7 @@ export default {
   data() {
     return {
       courses: [],
+      courseDescription: ''
     };
   },
   methods: {
@@ -39,6 +40,12 @@ export default {
         .then((data) => (this.courses = data))
         .catch((err) => console.log(err.message));
     },
+    showDescription(courseId) {
+      fetch(`/api/courses/${courseId}/description`)
+        .then((response) => response.json())
+        .then((data) => (this.courseDescription = data.description))
+        .catch((err) => console.log(err.message));
+    }
   },
   computed: {
     coursesWithGrades() {
@@ -83,5 +90,13 @@ th, td {
 .fail {
   background-color: red;
   color: white;
+}
+.code-hover:hover {
+  background-color: #f5f5f5;
+}
+.course-description {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f5f5f5;
 }
 </style>
