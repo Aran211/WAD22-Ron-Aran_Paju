@@ -1,6 +1,6 @@
 <template>
   <div>
-<h3> My Courses </h3>
+    <h3> My Courses </h3>
     <div class="container">
       <table>
           <tr>
@@ -16,8 +16,8 @@
             <td>{{ course.title}} </td>
             <td>{{ course.semester }} </td>
             <td>{{ course.homeworks }} </td> 
-            <td>{{ course.exam }}</td>
-            <td>{{ course.grade }}</td>
+            <td :class="{'fail': course.exam < 21}" >{{ course.exam }}</td>
+            <td :class="{'fail': course.grade < 51}" >{{ course.grade }}</td>
           </tr>
     </table>
     </div>
@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     fetchCourses() {
-      fetch(`http://localhost:3000/api/mycourses/`)
+      fetch(`/api/mycourses/`)
         .then((response) => response.json())
         .then((data) => (this.courses = data))
         .catch((err) => console.log(err.message));
@@ -79,5 +79,9 @@ th, td {
   width: 90%;
   display: flex;
   justify-content: center;
+}
+.fail {
+  background-color: red;
+  color: white;
 }
 </style>
