@@ -10,6 +10,8 @@
             <th>Homeworks</th>
             <th>Exam</th>
             <th>Grade</th>
+            <th>Note</th>
+            <th>Update</th>
           </tr>
           <tr class="item" v-for="course in coursesWithGrades" :key="course.id">
             <td @click="showdescription(course.id)" class="code">{{ course.code }} </td>
@@ -18,6 +20,12 @@
             <td>{{ course.homeworks }} </td> 
             <td :class="{'fail': course.exam < 21}" >{{ course.exam }}</td>
             <td :class="{'fail': course.grade < 51}" >{{ course.grade }}</td>
+            <td>
+              <input v-model="course.note" type="text" />
+            </td>
+            <td>
+               <button @click="updateCourse(course.id, course.note)">Update</button>
+            </td>
           </tr>
     </table>
     </div>
@@ -45,7 +53,21 @@ export default {
         .then((response) => response.json())
         .then((data) => (this.courseDescription = data.description))
         .catch((err) => console.log(err.message));
-    }
+    },
+    updateCourse(courseId, note) {
+      fetch(`/api/courses/${courseId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: note })
+      })
+        .then(() => {
+          this.fetchCourses();
+        })
+        .catch((err) => console.log(err.message));
+    },
+     updateNote(courseId, note) {
+      //fetch(`/api
+    } 
   },
   computed: {
     coursesWithGrades() {
