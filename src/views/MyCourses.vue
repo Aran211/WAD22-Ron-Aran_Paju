@@ -65,9 +65,20 @@ export default {
         })
         .catch((err) => console.log(err.message));
     },
-     updateNote(courseId, note) {
-      //fetch(`/api
-    } 
+    updateNote(courseId, note) {
+      fetch(`/api/courses/${courseId}/note`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: note })
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
   },
   computed: {
     coursesWithGrades() {
