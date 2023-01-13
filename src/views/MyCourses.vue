@@ -9,13 +9,15 @@
             <th>Semester</th>
             <th>Homeworks</th>
             <th>Exam</th>
+            <th>Grade</th>
           </tr>
-          <tr class="item" v-for="course in courses" :key="course.id">
+          <tr class="item" v-for="course in coursesWithGrades" :key="course.id">
             <td @click="showdescription(course.id)" class="code">{{ course.code }} </td>
             <td>{{ course.title}} </td>
             <td>{{ course.semester }} </td>
             <td>{{ course.homeworks }} </td> 
             <td>{{ course.exam }}</td>
+            <td>{{ course.grade }}</td>
           </tr>
     </table>
     </div>
@@ -36,7 +38,15 @@ export default {
         .then((response) => response.json())
         .then((data) => (this.courses = data))
         .catch((err) => console.log(err.message));
-   },
+    },
+  },
+  computed: {
+    coursesWithGrades() {
+        return this.courses.map(course => {
+            course.grade = course.homeworks + course.exam;
+            return course;
+        });
+    }
   },
   mounted() {
     this.fetchCourses();
